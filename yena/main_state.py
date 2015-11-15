@@ -18,7 +18,7 @@ font = None
 
 class Background:
     def __init__(self):
-        self.image = load_image('background3.png')
+        self.image = load_image('background2.png')
         self.frame = 0
 
     def draw(self):
@@ -44,17 +44,19 @@ class Penguin:
 
 class Object:
     def __init__(self):
-        self.x = 100
+        self.frame = 0
+        self.x = 150
         self.x2 =250
-        self.x3 =400
-        self.y =700
-        self.y2 =800
-        self.y3 =900
-        self.image = load_image('mon.png')
+        self.x3 =350
+        self.y =random.randint(700,800)
+        self.y2 =random.randint(800,900)
+        self.y3 =random.randint(900,1000)
+        self.image = load_image('cow.png')
     def update(self):
-        self.y -= random.randint(20,70)
-        self.y2 -= random.randint(20,70)
-        self.y3 -= random.randint(20,70)
+        self.frame = (self.frame + 1) % 10
+        self.y -= 35
+        self.y2 -= 35
+        self.y3 -= 35
         if self.y <= 0:
             self.y = 700
         if self.y2 <= 0:
@@ -62,9 +64,9 @@ class Object:
         if self.y3 <= 0:
             self.y3 = 900
     def draw(self):
-        self.image.clip_draw(0,0,100,100,self.x,self.y)
-        self.image.clip_draw(0,0,100,100,self.x2,self.y2)
-        self.image.clip_draw(0,0,100,100,self.x3,self.y3)
+        self.image.clip_draw(self.frame*150,0,150,150,self.x,self.y)
+        self.image.clip_draw(self.frame*150,0,150,150,self.x2,self.y2)
+        self.image.clip_draw(self.frame*150,0,150,150,self.x3,self.y3)
 
 def enter():
     global penguin,background,object
@@ -94,9 +96,13 @@ def handle_events():
             game_framework.change_state(title_state)
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_RIGHT:
-                penguin.x = penguin.x+160
+                penguin.x = penguin.x+110
+                if penguin.x >= 470:
+                    penguin.x = penguin.x-110
             elif event.key == SDLK_LEFT:
-                penguin.x = penguin.x-160
+                penguin.x = penguin.x-110
+                if penguin.x <= 30:
+                    penguin.x = penguin.x+110
 
 def update():
     penguin.update()
