@@ -2,7 +2,7 @@ import random
 
 from pico2d import *
 
-class Cow():
+class Cow:
     image = None
     def __init__(self):
         self.frame = 0
@@ -12,7 +12,7 @@ class Cow():
         if self.cow_count == 2:
             self.x = 250
         if self.cow_count == 3:
-            self.x = 350
+            self.x = 360
         self.y =random.randint(700,1000)
         self.image = load_image('cow.png')
         self.fall_speed = 35
@@ -22,7 +22,14 @@ class Cow():
         self.frame = (self.frame + 1) % 10
         self.y -= self.fall_speed
         if self.y <= 0:
-            self.y = 700
+            self.y=random.randint(700,1000)
+            self.cow_count =random.randint(1,3)
+            if self.cow_count == 1:
+                self.x = 150
+            if self.cow_count == 2:
+                self.x = 250
+            if self.cow_count == 3:
+                self.x = 360
 
     def stop(self):
         self.fall_speed = 0

@@ -41,8 +41,7 @@ class Penguin:
     def draw(self):
         self.image.clip_draw(self.frame2*200,200,200,200,self.x,100)
 
-
-class Object:
+class Cow:
     def __init__(self):
         self.frame = 0
         self.x = 150
@@ -68,16 +67,17 @@ class Object:
         self.image.clip_draw(self.frame*150,0,150,150,self.x2,self.y2)
         self.image.clip_draw(self.frame*150,0,150,150,self.x3,self.y3)
 
+
 def enter():
-    global penguin,background,object
+    global penguin,background,cow
     penguin = Penguin()
     background = Background()
-    object = Object()
+    cow = Cow()
 def exit():
-    global penguin,background,object
+    global penguin,background,cow
     del(penguin)
     del(background)
-    del(object)
+    del(cow)
 
 def pause():
     pass
@@ -106,13 +106,13 @@ def handle_events():
 
 def update():
     penguin.update()
-    object.update()
+    cow.update()
     background.update()
     delay(0.1)
 
 def draw():
     clear_canvas()
     background.draw()
-    object.draw()
+    cow.draw()
     penguin.draw()
     update_canvas()

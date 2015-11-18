@@ -11,27 +11,32 @@ import title_state
 from penguin import Penguin
 from cow import Cow
 from background import Background
+from item import Item
+from cute_mon import Cute_mon
 
 name = "collison"
 
 penguin = None
 cow = None
 grass = None
+item = None
+cute_mon = None
 
 def create_world():
-    global penguin,cows,background
+    global penguin,cow,background,item,cute_mon
     penguin = Penguin()
-    cows = [Cow() for i in range(3)]
+    cow = Cow()#[Cow() for i in range(3)]
     background = Background()
-
+    item = Item()
+    cute_mon = Cute_mon()
 
 def destroy_world():
-    global penguin,cows,background
+    global penguin,cow,background,item,cute_mon
     del(penguin)
-    del(cows)
+    del(cow)
     del(background)
-
-
+    del(item)
+    del(cute_mon)
 def enter():
     open_canvas(500,700)
 #    game_framework.reset_time()
@@ -75,26 +80,38 @@ def collide(a, b):
 
 def update():
     penguin.update()
-    for cow in cows:
-        cow.update()
+    #for cow in cows:
+    cow.update()
     background.update()
+    item.update()
+    cute_mon.update()
 
-    for cow in cows:
-        if collide(penguin, cow):
-            print("collision")
-            cow.stop()
+    #for cow in cows:
+    if collide(penguin, cow):
+        print("cow_collision")
+        cow.stop()
+    if collide(penguin,item):
+        print("item_collision")
+        item.stop()
+    if collide(penguin,cute_mon):
+        print("cute_mon_collision")
+        cute_mon.stop()
 
     delay(0.1)
 
 def draw():
     clear_canvas()
     background.draw()
-    for cow in cows:
-        cow.draw()
+    #for cow in cows:
+    cow.draw()
     penguin.draw()
+    item.draw()
+    cute_mon.draw()
 
-    for cow in cows:
-        cow.draw_bb()
+    #for cow in cows:
+    cow.draw_bb()
     penguin.draw_bb()
+    item.draw_bb()
+    cute_mon.draw_bb()
 
     update_canvas()
