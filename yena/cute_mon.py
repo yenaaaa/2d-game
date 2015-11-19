@@ -16,12 +16,14 @@ class Cute_mon:
         self.y =random.randint(700,1000)
         self.image = load_image('cute_monster.png')
         self.fall_speed = 35
-
-
+        self.item_image = load_image('storm.png')
+        self.item_check = 0
     def update(self):
         self.frame = (self.frame + 1) % 8
+        self.item_frame = (self.frame + 1)%4
         self.y -= self.fall_speed
         if self.y <= 0:
+            self.item_check = 0
             self.y =random.randint(700,1000)
             self.item_count =random.randint(1,3)
             if self.item_count == 1:
@@ -35,9 +37,18 @@ class Cute_mon:
         self.fall_speed = 0
 
     def draw(self):
-        self.image.clip_draw(self.frame*125,0,125,87,self.x,self.y)
+        if self.item_check == 1:
+            if self.y <= 0 :
+                self.item_check = 0
+            else:
+                self.item_image.clip_draw(self.item_frame*99,0,99,103,self.x,self.y)
+        else:
+            self.image.clip_draw(self.frame*125,0,125,87,self.x,self.y)
 
-
+    def item(self):
+        self.x = 150;
+        self.y=1500;
+        self.item_check = 1
     def get_bb(self):
         return self.x - 30, self.y - 30, self.x + 30,self.y +30
 

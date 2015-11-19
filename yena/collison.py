@@ -90,13 +90,18 @@ def update():
     if collide(penguin, cow):
         print("cow_collision")
         cow.stop()
+        item.stop()
+        cute_mon.stop()
     if collide(penguin,item):
         print("item_collision")
-        item.stop()
+        item.remove()
+        cow.item()
+        cute_mon.item()
     if collide(penguin,cute_mon):
         print("cute_mon_collision")
         cute_mon.stop()
-
+        cow.stop()
+        item.stop()
     delay(0.1)
 
 def draw():
@@ -113,5 +118,4 @@ def draw():
     penguin.draw_bb()
     item.draw_bb()
     cute_mon.draw_bb()
-
     update_canvas()
