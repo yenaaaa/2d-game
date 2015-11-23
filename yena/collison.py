@@ -13,6 +13,7 @@ from cow import Cow
 from background import Background
 from item import Item
 from cute_mon import Cute_mon
+from timer import Timer
 
 name = "collison"
 
@@ -21,22 +22,25 @@ cow = None
 grass = None
 item = None
 cute_mon = None
+timer = None
 
 def create_world():
-    global penguin,cow,background,item,cute_mon
+    global penguin,cow,background,item,cute_mon,timer
     penguin = Penguin()
+    timer = Timer()
     cow = Cow()#[Cow() for i in range(3)]
     background = Background()
     item = Item()
     cute_mon = Cute_mon()
 
 def destroy_world():
-    global penguin,cow,background,item,cute_mon
+    global penguin,cow,background,item,cute_mon,timer
     del(penguin)
     del(cow)
     del(background)
     del(item)
     del(cute_mon)
+    del(timer)
 def enter():
     open_canvas(500,700)
 #    game_framework.reset_time()
@@ -85,6 +89,7 @@ def update():
     background.update()
     item.update()
     cute_mon.update()
+    timer.update()
 
     #for cow in cows:
     if collide(penguin, cow):
@@ -92,6 +97,7 @@ def update():
         cow.stop()
         item.stop()
         cute_mon.stop()
+        penguin.die()
     if collide(penguin,item):
         print("item_collision")
         item.remove()
@@ -102,6 +108,7 @@ def update():
         cute_mon.stop()
         cow.stop()
         item.stop()
+        penguin.die()
     delay(0.1)
 
 def draw():
@@ -112,6 +119,8 @@ def draw():
     penguin.draw()
     item.draw()
     cute_mon.draw()
+    timer.draw()
+
 
     #for cow in cows:
     cow.draw_bb()
