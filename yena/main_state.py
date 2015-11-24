@@ -8,76 +8,51 @@ import game_framework
 import title_state
 
 
+from penguin import Penguin
+from cow import Cow
+from background import Background
+from item import Item
+from cute_mon import Cute_mon
+from timer import Timer
 
-name = "MainState"
+
+
+name = "collison"
 
 penguin = None
-background = None
-font = None
+cow = None
+grass = None
+item = None
+cute_mon = None
+timer = None
 
-
-class Background:
-    def __init__(self):
-        self.image = load_image('background2.png')
-        self.frame = 0
-
-    def draw(self):
-         self.image.clip_draw(0,20*self.frame,500,700,250,350)
-
-    def update(self):
-        self.frame = (self.frame + 1) % 35
-
-
-
-class Penguin:
-    def __init__(self):
-        self.x = 250
-        self.frame2 = 0
-        self.image = load_image('penguin_ani.png')
-
-    def update(self):
-        self.frame2 = (self.frame2 + 1) % 4
-
-    def draw(self):
-        self.image.clip_draw(self.frame2*200,200,200,200,self.x,100)
-
-class Cow:
-    def __init__(self):
-        self.frame = 0
-        self.x = 150
-        self.x2 =250
-        self.x3 =350
-        self.y =random.randint(700,800)
-        self.y2 =random.randint(800,900)
-        self.y3 =random.randint(900,1000)
-        self.image = load_image('cow.png')
-    def update(self):
-        self.frame = (self.frame + 1) % 10
-        self.y -= 35
-        self.y2 -= 35
-        self.y3 -= 35
-        if self.y <= 0:
-            self.y = 700
-        if self.y2 <= 0:
-            self.y2 =800
-        if self.y3 <= 0:
-            self.y3 = 900
-    def draw(self):
-        self.image.clip_draw(self.frame*150,0,150,150,self.x,self.y)
-        self.image.clip_draw(self.frame*150,0,150,150,self.x2,self.y2)
-        self.image.clip_draw(self.frame*150,0,150,150,self.x3,self.y3)
-
-
-def enter():
-    global penguin,background,cow
+def create_world():
+    global penguin,cow,background,item,cute_mon,timer
     penguin = Penguin()
+    timer = Timer()
+    cow = Cow()#[Cow() for i in range(3)]
     background = Background()
-    cow = Cow()
-def exit():
-    global penguin,background,cow
+    item = Item()
+    cute_mon = Cute_mon()
+
+def destroy_world():
+    global penguin,cow,background,item,cute_mon,timer
     del(penguin)
-    del(background)
     del(cow)
+    del(background)
+    del(item)
+    del(cute_mon)
+    del(timer)
+def enter():
+    open_canvas(500,700)
+#    game_framework.reset_time()
+    create_world()
+
+
+def exit():
+    destroy_world()
+    close_canvas()
+
 
 def pause():
     pass
@@ -94,25 +69,68 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_state(title_state)
-        elif event.type == SDL_KEYDOWN:
-            if event.key == SDLK_RIGHT:
-                penguin.x = penguin.x+110
-                if penguin.x >= 470:
-                    penguin.x = penguin.x-110
-            elif event.key == SDLK_LEFT:
-                penguin.x = penguin.x-110
-                if penguin.x <= 30:
-                    penguin.x = penguin.x+110
+        elif event.type == SDL_KEYDOWN :
+            penguin.handle_events(event)
+
+
+def collide(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return False
+    if right_a <left_b : return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+
+    return True
 
 def update():
     penguin.update()
+    #for cow in cows:
     cow.update()
     background.update()
+    item.update()
+    cute_mon.update()
+    timer.update()
+
+    #for cow in cows:
+    if collide(penguin, cow):
+        print("cow_collision")
+        cow.stop()
+        item.stop()
+        cute_mon.stop()
+        penguin.die()
+        timer.stop()
+        background.stop()
+    if collide(penguin,item):
+        print("item_collision")
+        item.remove()
+        cow.item()
+        cute_mon.item()
+    if collide(penguin,cute_mon):
+        print("cute_mon_collision")
+        cute_mon.stop()
+        cow.stop()
+        item.stop()
+        penguin.die()
+        timer.stop()
+        background.stop()
     delay(0.1)
 
 def draw():
     clear_canvas()
     background.draw()
+    #for cow in cows:
     cow.draw()
     penguin.draw()
+    item.draw()
+    cute_mon.draw()
+    timer.draw()
+
+
+    #for cow in cows:
+    cow.draw_bb()
+    penguin.draw_bb()
+    item.draw_bb()
+    cute_mon.draw_bb()
     update_canvas()

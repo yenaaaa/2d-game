@@ -2,7 +2,10 @@ import random
 
 from pico2d import *
 
+
+
 class Penguin:
+
     def __init__(self):
         self.x = 250
         self.y = 0
@@ -11,10 +14,12 @@ class Penguin:
         self.image = load_image('penguin_ani.png')
         self.die_check = 0
         self.die_image = load_image('blood.png')
+
     def update(self):
         self.frame = (self.frame + 1) % 4
-
         self.die_frame = (self.die_frame + 1) %6
+
+
 
     def draw(self):
         if self.die_check == 1:
@@ -29,6 +34,8 @@ class Penguin:
         draw_rectangle(*self.get_bb())
 
     def die(self):
+        if self.die_frame == 5 :
+            self.die_frame = (self.die_frame - 1) % 6
         self.die_check = 1
 
 

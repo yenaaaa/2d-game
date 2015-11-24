@@ -35,6 +35,8 @@ class Cute_mon:
 
     def stop(self):
         self.fall_speed = 0
+        self.frame = (self.frame - 1) % 8
+        self.item_frame = (self.frame - 1)%4
 
     def draw(self):
         if self.item_check == 1:

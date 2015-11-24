@@ -36,6 +36,8 @@ class Cow:
 
     def stop(self):
         self.fall_speed = 0
+        self.item_frame = (self.frame - 1)%4
+        self.frame = (self.frame - 1) % 10
     def draw(self):
         if self.item_check == 1:
             if self.y <= 0 :
