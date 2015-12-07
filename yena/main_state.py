@@ -6,7 +6,7 @@ from pico2d import *
 
 import game_framework
 import title_state
-
+import game_over
 
 from penguin import Penguin
 from cow import Cow
@@ -26,6 +26,7 @@ item = None
 cute_mon = None
 timer = None
 
+
 def create_world():
     global penguin,cow,background,item,cute_mon,timer
     penguin = Penguin()
@@ -43,6 +44,7 @@ def destroy_world():
     del(item)
     del(cute_mon)
     del(timer)
+
 def enter():
     open_canvas(500,700)
 #    game_framework.reset_time()
@@ -86,14 +88,14 @@ def collide(a, b):
 
 def update():
     penguin.update()
-    #for cow in cows:
+
     cow.update()
     background.update()
     item.update()
     cute_mon.update()
     timer.update()
 
-    #for cow in cows:
+
     if collide(penguin, cow):
         print("cow_collision")
         cow.stop()
@@ -102,6 +104,8 @@ def update():
         penguin.die()
         timer.stop()
         background.stop()
+        timer.die()
+
     if collide(penguin,item):
         print("item_collision")
         item.remove()
@@ -115,12 +119,12 @@ def update():
         penguin.die()
         timer.stop()
         background.stop()
+        timer.die()
     delay(0.1)
 
 def draw():
     clear_canvas()
     background.draw()
-    #for cow in cows:
     cow.draw()
     penguin.draw()
     item.draw()
@@ -128,9 +132,9 @@ def draw():
     timer.draw()
 
 
-    #for cow in cows:
-    cow.draw_bb()
-    penguin.draw_bb()
-    item.draw_bb()
-    cute_mon.draw_bb()
+
+#    cow.draw_bb()
+ #   penguin.draw_bb()
+ #   item.draw_bb()
+ #   cute_mon.draw_bb()
     update_canvas()
