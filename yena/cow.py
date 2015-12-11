@@ -6,7 +6,9 @@ class Cow:
     image = None
     def __init__(self):
         self.frame = 0
+        self.grass_frame = 0
         self.cow_count =random.randint(1,3)
+        self.count = 0
         if self.cow_count == 1:
             self.x = 150
         if self.cow_count == 2:
@@ -15,13 +17,20 @@ class Cow:
             self.x = 360
         self.y =random.randint(700,1000)
         self.image = load_image('cow.png')
+        self.grass_image = load_image('grassmon.png')
         self.item_image = load_image('storm.png')
         self.fall_speed = 35
         self.item_check = 0
 
     def update(self):
+        self.count += 1
         self.item_frame = (self.frame + 1)%4
-        self.frame = (self.frame + 1) % 10
+
+        if self.count >= 300:
+            self.grass_frame = (self.grass_frame + 1)%2
+        else :
+            self.frame = (self.frame + 1) % 10
+
         self.y -= self.fall_speed
         if self.y <= 0:
             self.item_check = 0
@@ -45,11 +54,13 @@ class Cow:
                # self.image.clip_draw(self.frame*125,0,125,87,self.x,self.y)
             else:
                 self.item_image.clip_draw(self.item_frame*99,0,99,103,self.x,self.y)
+        elif self.count >= 300:
+            self.grass_image.clip_draw(self.grass_frame*80,0,80,100,self.x,self.y)
         else:
             self.image.clip_draw(self.frame*150,0,150,150,self.x,self.y)
     def item(self):
-        self.x = 150;
-        self.y = 1400;
+        self.x = 150
+        self.y = 1400
         self.item_check = 1
     def get_bb(self):
         return self.x - 50, self.y - 75, self.x + 35,self.y +40

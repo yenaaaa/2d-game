@@ -133,8 +133,8 @@ def draw():
 
 
 
-#    cow.draw_bb()
- #   penguin.draw_bb()
- #   item.draw_bb()
- #   cute_mon.draw_bb()
+    cow.draw_bb()
+    penguin.draw_bb()
+    item.draw_bb()
+    cute_mon.draw_bb()
     update_canvas()

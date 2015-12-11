@@ -6,6 +6,8 @@ class Cute_mon:
     image = None
     def __init__(self):
         self.frame = 0
+        self.zombie_frame = 0
+        self.count = 0
         self.item_count =random.randint(1,3)
         if self.item_count == 1:
             self.x = 150
@@ -15,11 +17,18 @@ class Cute_mon:
             self.x = 360
         self.y =random.randint(700,1000)
         self.image = load_image('cute_monster.png')
+        self.zombie_image = load_image('zombie.png')
         self.fall_speed = 35
         self.item_image = load_image('storm.png')
         self.item_check = 0
     def update(self):
-        self.frame = (self.frame + 1) % 8
+        self.count += 1
+
+        if self.count >= 300:
+            self.zombie_frame = (self.zombie_frame + 1) % 2
+        else :
+            self.frame = (self.frame + 1) % 8
+
         self.item_frame = (self.frame + 1)%4
         self.y -= self.fall_speed
         if self.y <= 0:
@@ -44,6 +53,8 @@ class Cute_mon:
                 self.item_check = 0
             else:
                 self.item_image.clip_draw(self.item_frame*99,0,99,103,self.x,self.y)
+        elif self.count >= 300:
+            self.zombie_image.clip_draw(self.zombie_frame*75,0,75,100,self.x,self.y)
         else:
             self.image.clip_draw(self.frame*125,0,125,87,self.x,self.y)
 
