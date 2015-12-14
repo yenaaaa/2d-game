@@ -26,6 +26,10 @@ class Cute_mon:
 
         if self.count >= 300:
             self.zombie_frame = (self.zombie_frame + 1) % 2
+            if self.item_check == 1:
+                self.fall_speed = 10
+            else:
+                self.fall_speed = 50
         else :
             self.frame = (self.frame + 1) % 8
 
@@ -43,27 +47,38 @@ class Cute_mon:
                 self.x = 360
 
     def stop(self):
-        self.fall_speed = 0
+        self.count -= 1
+
+        self.y = 170
+
+        self.zombie_frame = (self.zombie_frame - 1) % 2
         self.frame = (self.frame - 1) % 8
         self.item_frame = (self.frame - 1)%4
 
     def draw(self):
         if self.item_check == 1:
-            if self.y <= 0 :
-                self.item_check = 0
+            if self.count >= 300:
+                 self.zombie_image.clip_draw(self.zombie_frame*75,0,75,100,self.x,self.y)
             else:
-                self.item_image.clip_draw(self.item_frame*99,0,99,103,self.x,self.y)
+                if self.y <= 0 :
+                    self.item_check = 0
+                else:
+                    self.item_image.clip_draw(self.item_frame*99,0,99,103,self.x,self.y)
         elif self.count >= 300:
             self.zombie_image.clip_draw(self.zombie_frame*75,0,75,100,self.x,self.y)
         else:
             self.image.clip_draw(self.frame*125,0,125,87,self.x,self.y)
 
     def item(self):
-        self.x = 150;
-        self.y=1500;
+        if self.count < 300:
+            self.x = 150
+            self.y=1500
         self.item_check = 1
     def get_bb(self):
-        return self.x - 30, self.y - 30, self.x + 30,self.y +30
+        if self.count >= 300:
+            return self.x - 30, self.y - 40, self.x + 30,self.y +30
+        else :
+            return self.x - 30, self.y - 30, self.x + 30,self.y +30
 
 
     def draw_bb(self):

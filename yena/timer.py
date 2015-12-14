@@ -27,20 +27,16 @@ class Timer:
                    self.mi_frame = (self.mi_frame + 1) % 10
 
     def stop(self):
-        self.count = (self.count - 1)%10
+        self.count -= (self.count + 1)%10
 
     def die(self):
         self.check = 1
 
     def draw(self):
-        if self.check == 1:
-            self.y = 450
             self.num_image.clip_draw(self.sec_frame*20,0,20,28,self.x,self.y)
             self.num_image.clip_draw(self.ten_sec_frame*20,0,20,28,self.x - 30,self.y)
             self.num_image.clip_draw(self.mi_frame*20,0,20,28,220,self.y)
             self.dot_image.draw(250,self.y,11,28)
-        else:
-            self.num_image.clip_draw(self.sec_frame*20,0,20,28,self.x,self.y)
-            self.num_image.clip_draw(self.ten_sec_frame*20,0,20,28,self.x - 30,self.y)
-            self.num_image.clip_draw(self.mi_frame*20,0,20,28,220,self.y)
-            self.dot_image.draw(250,self.y,11,28)
+
+            if self.check == 1 :
+                self.over_image.draw(250,350,300,100)

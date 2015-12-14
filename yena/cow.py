@@ -28,6 +28,10 @@ class Cow:
 
         if self.count >= 300:
             self.grass_frame = (self.grass_frame + 1)%2
+            if self.item_check == 1:
+                self.fall_speed = 10
+            else:
+                self.fall_speed = 50
         else :
             self.frame = (self.frame + 1) % 10
 
@@ -44,26 +48,36 @@ class Cow:
                 self.x = 360
 
     def stop(self):
-        self.fall_speed = 0
+        self.count -= 1
+
+        self.y = 170
+
+        self.grass_frame = (self.grass_frame - 1)%2
         self.item_frame = (self.frame - 1)%4
         self.frame = (self.frame - 1) % 10
     def draw(self):
         if self.item_check == 1:
-            if self.y <= 0 :
-                self.item_check = 0
-               # self.image.clip_draw(self.frame*125,0,125,87,self.x,self.y)
+            if self.count >= 300:
+                 self.grass_image.clip_draw(self.grass_frame*80,0,80,100,self.x,self.y)
             else:
-                self.item_image.clip_draw(self.item_frame*99,0,99,103,self.x,self.y)
+                if self.y <= 0 :
+                    self.item_check = 0
+                else:
+                    self.item_image.clip_draw(self.item_frame*99,0,99,103,self.x,self.y)
         elif self.count >= 300:
             self.grass_image.clip_draw(self.grass_frame*80,0,80,100,self.x,self.y)
         else:
             self.image.clip_draw(self.frame*150,0,150,150,self.x,self.y)
     def item(self):
-        self.x = 150
-        self.y = 1400
+        if self.count < 300:
+            self.x = 150
+            self.y=1500
         self.item_check = 1
     def get_bb(self):
-        return self.x - 50, self.y - 75, self.x + 35,self.y +40
+        if self.count >= 300:
+            return self.x - 25, self.y - 30, self.x + 25,self.y +20
+        else:
+          return self.x - 50, self.y - 75, self.x + 35,self.y +40
 
 
     def draw_bb(self):

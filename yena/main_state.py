@@ -6,7 +6,7 @@ from pico2d import *
 
 import game_framework
 import title_state
-import game_over
+
 
 from penguin import Penguin
 from cow import Cow
@@ -97,7 +97,6 @@ def update():
 
 
     if collide(penguin, cow):
-        print("cow_collision")
         cow.stop()
         item.stop()
         cute_mon.stop()
@@ -107,12 +106,10 @@ def update():
         timer.die()
 
     if collide(penguin,item):
-        print("item_collision")
         item.remove()
         cow.item()
         cute_mon.item()
     if collide(penguin,cute_mon):
-        print("cute_mon_collision")
         cute_mon.stop()
         cow.stop()
         item.stop()
